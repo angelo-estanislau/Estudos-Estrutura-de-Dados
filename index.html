@@ -93,28 +93,57 @@
             <!-- Hash Table Content -->
             <div id="tab-hash" class="tab-content">
                 <div class="concept-card">
-                    <h2 class="text-2xl font-bold mb-3 text-cyan-700">1. Introdução à Pesquisa</h2>
-                    <p class="mb-2">Antes de Hashing, é fundamental entender algoritmos de pesquisa básicos que operam em vetores.</p>
-                    <ul class="list-disc list-inside space-y-2">
-                        <li><strong>Busca Sequencial:</strong> O método mais simples. Percorre o vetor do início ao fim, comparando cada elemento com a chave de busca. Complexidade: O(n).</li>
-                        <li><strong>Busca Binária:</strong> Um método muito mais eficiente, mas que <strong>exige que o vetor esteja ordenado</strong>. Compara a chave com o elemento do meio. Se for igual, encontrou. Se for menor, busca na metade esquerda. Se for maior, busca na metade direita. Complexidade: O(log n).</li>
-                    </ul>
+                    <h2 class="text-2xl font-bold mb-3 text-cyan-700">1. Algoritmos de Pesquisa Básicos</h2>
+                    <p class="mb-3">Antes de Hashing, é fundamental entender algoritmos de pesquisa que operam em vetores, pois eles são a base para muitas operações e servem como um ponto de comparação de eficiência.</p>
+                    <div class="p-4 border-l-4 border-cyan-200 bg-cyan-50 mb-4 rounded-r-lg">
+                        <h3 class="font-bold text-lg">Busca Sequencial</h3>
+                        <p>O método mais intuitivo. O algoritmo percorre o vetor posição por posição, do início ao fim, comparando cada elemento com o valor procurado. Ele para assim que encontra o elemento ou quando chega ao final do vetor.
+                        <br><strong>Exemplo Prático:</strong> Procurar o número 25 em `[10, 50, 25, 40]`. O algoritmo compara com 10 (não é), compara com 50 (não é), compara com 25 (encontrou!) e para na terceira posição.
+                        <br><strong>Complexidade:</strong> O(n), pois no pior caso (o elemento ser o último ou não existir), ele precisa verificar todos os n elementos.</p>
+                    </div>
+                    <div class="p-4 border-l-4 border-cyan-200 bg-cyan-50 rounded-r-lg">
+                        <h3 class="font-bold text-lg">Busca Binária</h3>
+                        <p>Um método muito mais rápido, mas com um pré-requisito crucial: <strong>o vetor deve estar ordenado</strong>. Ele funciona eliminando metade do espaço de busca a cada passo.
+                        <br><strong>Exemplo Prático:</strong> Procurar 25 em `[10, 20, 25, 40, 50]`. O algoritmo olha para o meio (25). Encontrou de primeira! Se procurasse por 10, ele olharia para o 25, veria que 10 é menor, e então descartaria toda a metade direita, buscando apenas em `[10, 20]`.
+                        <br><strong>Complexidade:</strong> O(log n), pois a cada passo ele divide o problema pela metade.</p>
+                    </div>
                 </div>
 
                 <div class="concept-card">
-                    <h2 class="text-2xl font-bold mb-3 text-cyan-700">2. Hashing ou Tabelas Hash</h2>
-                    <p>É uma estrutura que otimiza a busca para uma complexidade média de O(1). A ideia é usar uma <strong>Função de Hashing</strong> para calcular um índice (endereço) no vetor a partir da própria chave de busca, permitindo acesso quase direto ao dado.</p>
+                    <h2 class="text-2xl font-bold mb-3 text-cyan-700">2. Hashing e Funções de Hashing</h2>
+                    <p class="mb-3">Hashing é a técnica de mapear uma chave de qualquer tipo para um índice numérico de um vetor. A <strong>Função de Hashing</strong> é o motor desse processo. Uma boa função deve ser rápida, determinística e, o mais importante, uniforme para espalhar bem as chaves.</p>
+                    <div class="p-4 border-l-4 border-cyan-200 bg-cyan-50 mb-4 rounded-r-lg">
+                         <h3 class="font-bold text-lg">Método da Divisão</h3>
+                         <p>É o mais comum e simples. A fórmula é `h(k) = k mod M`, onde `k` é a chave (se não for numérica, pode ser a soma dos seus caracteres) e `M` é o tamanho da tabela. Para minimizar colisões, `M` deve ser um número primo não muito próximo de potências de 2.
+                         <br><strong>Exemplo:</strong> Tabela de tamanho M=11, chave k=73. O índice será `73 % 11 = 7`.</p>
+                    </div>
+                     <div class="p-4 border-l-4 border-cyan-200 bg-cyan-50 mb-4 rounded-r-lg">
+                         <h3 class="font-bold text-lg">Método da Multiplicação</h3>
+                         <p>Usa a fórmula `h(k) = floor(M * (k*A mod 1))`, onde `A` é uma constante entre 0 e 1 (ex: a parte fracionária da raiz de 2). Este método é bom porque a escolha de `M` não é tão crítica.</p>
+                    </div>
+                     <div class="p-4 border-l-4 border-cyan-200 bg-cyan-50 rounded-r-lg">
+                         <h3 class="font-bold text-lg">Método da Dobra (Folding)</h3>
+                         <p>A chave é dividida em partes, que são somadas ou combinadas para formar o índice.
+                         <br><strong>Exemplo:</strong> Chave k=123456, tabela de 3 dígitos. Dobramos em 123 e 456. Somando: `123 + 456 = 579`. O índice seria 579.</p>
+                    </div>
                 </div>
                 
                 <div class="concept-card">
-                    <h2 class="text-2xl font-bold mb-3 text-cyan-700">3. Tratando Colisões</h2>
-                    <p>Uma colisão ocorre quando duas chaves diferentes geram o mesmo índice. Existem duas grandes estratégias para lidar com isso:</p>
-                     <ul class="list-disc list-inside space-y-3 mt-3">
-                        <li><strong>Encadeamento Separado:</strong> Cada posição do vetor aponta para uma lista ligada. Todos os elementos que colidem no mesmo índice são armazenados nessa lista. É a abordagem mais flexível.</li>
-                        <li><strong>Endereçamento Aberto:</strong> Tenta encontrar uma posição alternativa livre no próprio vetor. Inclui métodos como Sondagem Linear (procura a próxima casa livre), Quadrática e Hashing Duplo.</li>
-                    </ul>
+                    <h2 class="text-2xl font-bold mb-3 text-cyan-700">3. Tratamento de Colisões</h2>
+                    <p class="mb-3">Uma colisão ocorre quando duas chaves diferentes geram o mesmo índice. É inevitável, então precisamos de estratégias para lidar com isso.</p>
+                     <div class="p-4 border-l-4 border-cyan-200 bg-cyan-50 mb-4 rounded-r-lg">
+                        <h3 class="font-bold text-lg">Encadeamento Separado</h3>
+                        <p>Cada posição do vetor aponta para uma lista ligada. Todos os elementos que colidem no mesmo índice são simplesmente inseridos nessa lista. É a abordagem mais comum e flexível.</p>
+                    </div>
+                     <div class="p-4 border-l-4 border-cyan-200 bg-cyan-50 rounded-r-lg">
+                        <h3 class="font-bold text-lg">Endereçamento Aberto</h3>
+                        <p>Tenta encontrar uma posição alternativa livre no próprio vetor.
+                        <br><strong>Sondagem Linear:</strong> Se o índice `i` está ocupado, tenta `i+1`, `i+2`, e assim por diante. Causa "agrupamento primário", que degrada a performance.
+                        <br><strong>Sondagem Quadrática:</strong> Se `i` está ocupado, tenta `i+1²`, `i+2²`, ... Evita o agrupamento primário, mas pode causar "agrupamento secundário".
+                        <br><strong>Hashing Duplo:</strong> Se `i` está ocupado, usa uma segunda função hash para determinar o "salto" a ser dado (`i + j*h2(k)`). É a melhor técnica de endereçamento aberto.</p>
+                    </div>
                 </div>
-                
+
                 <div class="concept-card">
                     <h2 class="text-2xl font-bold mb-3 text-cyan-700">Simulação Interativa de Encadeamento Separado</h2>
                     <div class="flex flex-col md:flex-row gap-4 mb-4">
@@ -131,16 +160,22 @@
             <div id="tab-externa" class="tab-content">
                 <div class="concept-card">
                     <h2 class="text-2xl font-bold mb-3 text-cyan-700">1. Memória Secundária</h2>
-                    <p>Refere-se a dispositivos de armazenamento não volátil, como HDs e SSDs. O acesso a esses dispositivos é milhares de vezes mais lento que o acesso à memória RAM. Por isso, algoritmos que operam em dados muito grandes precisam ser projetados para minimizar o número de leituras e escritas em disco.</p>
+                    <p>Refere-se a dispositivos de armazenamento não volátil, como HDs e SSDs. O acesso a esses dispositivos é milhares de vezes mais lento que o acesso à memória RAM. Por isso, algoritmos que operam em dados muito grandes precisam ser projetados para minimizar o número de leituras e escritas em disco (operações de I/O), pois essa é a operação mais custosa.</p>
                 </div>
                 
                 <div class="concept-card">
-                    <h2 class="text-2xl font-bold mb-3 text-cyan-700">2. Ordenação em Memória Secundária</h2>
-                    <p>O objetivo é ordenar arquivos que não cabem inteiramente na RAM. O principal algoritmo para isso é o <strong>MergeSort Externo</strong>.</p>
-                    <ol class="list-decimal list-inside space-y-2 mt-3">
-                        <li><strong>Fase 1: Criação de "Runs" (Blocos Ordenados):</strong> O arquivo grande é lido em pedaços que caibam na RAM. Cada pedaço é ordenado internamente (com QuickSort, por exemplo) e salvo como um arquivo temporário ordenado no disco.</li>
-                        <li><strong>Fase 2: Intercalação (k-way merge):</strong> Os "runs" são combinados. O algoritmo lê o início de cada run, encontra o menor elemento entre eles, escreve-o no arquivo de saída final e avança no run correspondente. O processo se repete até que todos os runs sejam intercalados.</li>
-                    </ol>
+                    <h2 class="text-2xl font-bold mb-3 text-cyan-700">2. Ordenação em Memória Secundária: MergeSort Externo</h2>
+                    <p class="mb-3">O objetivo é ordenar arquivos que não cabem inteiramente na RAM. O principal algoritmo para isso é o <strong>MergeSort Externo</strong>.</p>
+                    <div class="p-4 border-l-4 border-cyan-200 bg-cyan-50 mb-4 rounded-r-lg">
+                        <h3 class="font-bold text-lg">Fase 1: Criação de "Runs" (Blocos Ordenados)</h3>
+                        <p>O arquivo grande é lido em pedaços (chunks) que caibam na RAM. Cada chunk é ordenado internamente (com QuickSort, por exemplo) e salvo como um arquivo temporário ordenado no disco.
+                        <br><strong>Exemplo:</strong> Um arquivo de 1GB com memória RAM de 100MB. O algoritmo lê os primeiros 100MB, ordena-os e salva como `run1.tmp`. Depois lê os próximos 100MB, ordena e salva como `run2.tmp`, e assim por diante, criando 10 "runs".</p>
+                    </div>
+                     <div class="p-4 border-l-4 border-cyan-200 bg-cyan-50 rounded-r-lg">
+                        <h3 class="font-bold text-lg">Fase 2: Intercalação (k-way merge)</h3>
+                        <p>Os "runs" são combinados. O algoritmo lê uma pequena parte do início de cada run para "buffers de entrada" na memória. Ele então encontra o menor elemento entre todos os buffers, escreve-o em um "buffer de saída" e avança no run de onde o menor elemento veio. Quando o buffer de saída enche, ele é escrito no arquivo final.
+                        <br><strong>Exemplo:</strong> Com 10 runs, o algoritmo lê os primeiros elementos de cada um, encontra o menor global, escreve-o, e recarrega o buffer do run de onde o elemento saiu.</p>
+                    </div>
                 </div>
             </div>
 
@@ -148,15 +183,25 @@
             <div id="tab-arvores" class="tab-content">
                 <div class="concept-card">
                     <h2 class="text-2xl font-bold mb-3 text-cyan-700">1. Pesquisa em Memória Secundária</h2>
-                    <p>Para buscar dados em arquivos gigantes de forma eficiente, usamos técnicas de indexação. O <strong>Acesso Sequencial Indexado</strong> cria um índice menor, que pode ser carregado na memória, para apontar para a localização aproximada dos dados no arquivo principal, reduzindo drasticamente o tempo de busca.</p>
+                    <p class="mb-3">Para buscar dados em arquivos gigantes de forma eficiente, usamos técnicas de indexação.</p>
+                    <div class="p-4 border-l-4 border-cyan-200 bg-cyan-50 rounded-r-lg">
+                        <h3 class="font-bold text-lg">Acesso Sequencial Indexado (ISAM)</h3>
+                        <p>É um método que cria um índice menor, que pode ser carregado na memória, para apontar para a localização aproximada dos dados no arquivo principal. Funciona como o índice de um livro: em vez de ler todas as páginas, você vai ao índice, encontra o capítulo (bloco de disco) e vai direto para lá. Isso reduz drasticamente o tempo de busca, pois evita a varredura completa do arquivo em disco.</p>
+                    </div>
                 </div>
 
                 <div class="concept-card">
                     <h2 class="text-2xl font-bold mb-3 text-cyan-700">2. Árvores de Pesquisa: Árvore B</h2>
-                    <p>As Árvores B (e suas variantes como B+) são a estrutura de dados padrão para indexação em bancos de dados. Elas são "baixas e largas", significando que cada nó armazena muitas chaves. Isso minimiza a altura da árvore e, consequentemente, o número de acessos a disco necessários para encontrar um dado.</p>
+                    <p class="mb-3">As Árvores B são a estrutura de dados padrão para indexação em bancos de dados. Elas são "baixas e largas", significando que cada nó armazena muitas chaves. Isso minimiza a altura da árvore e, consequentemente, o número de acessos a disco necessários para encontrar um dado. Suas principais propriedades são:</p>
+                    <ul class="list-disc list-inside space-y-2 mt-3">
+                        <li><strong>Balanceamento:</strong> Todos os nós folha estão no mesmo nível, garantindo que a busca seja sempre eficiente.</li>
+                        <li><strong>Nós com Múltiplas Chaves:</strong> Cada nó pode conter um intervalo de chaves, o que reduz a altura da árvore.</li>
+                        <li><strong>Cisão (Split):</strong> A inserção de uma chave em um nó cheio causa uma cisão, onde o nó é dividido em dois e uma chave "sobe" para o nó pai, mantendo o balanceamento.</li>
+                        <li><strong>Fusão (Merge):</strong> A remoção pode causar o oposto, onde nós com poucas chaves se fundem com seus vizinhos para manter a ocupação mínima.</li>
+                    </ul>
                 </div>
 
-                <div class="concept-card">
+                 <div class="concept-card">
                     <h2 class="text-2xl font-bold mb-3 text-cyan-700">Simulação de Busca em Árvore B</h2>
                     <div class="text-center mb-4">
                         <div class="b-tree-node" data-keys="[7, 16]">P</div><br><br>
@@ -173,11 +218,16 @@
 
                 <div class="concept-card">
                     <h2 class="text-2xl font-bold mb-3 text-cyan-700">3. Árvores Digitais</h2>
-                    <p>São árvores otimizadas para armazenar e buscar strings (palavras).</p>
-                    <ul class="list-disc list-inside space-y-2">
-                        <li><strong>Trie (Árvore de Prefixo):</strong> Cada nó representa um caractere, e o caminho da raiz até um nó forma um prefixo. Ótima para aplicações de autocomplete.</li>
-                        <li><strong>Árvore Patricia:</strong> Uma versão compactada da Trie, onde nós com apenas um filho são fundidos para economizar espaço.</li>
-                    </ul>
+                    <p class="mb-3">São árvores otimizadas para armazenar e buscar strings (palavras), onde o caminho na árvore é determinado pelos caracteres da chave.</p>
+                     <div class="p-4 border-l-4 border-cyan-200 bg-cyan-50 mb-4 rounded-r-lg">
+                        <h3 class="font-bold text-lg">Trie (Árvore de Prefixo)</h3>
+                        <p>Cada nó representa um caractere, e o caminho da raiz até um nó forma um prefixo.
+                        <br><strong>Exemplo:</strong> Ao inserir "CASA" e "CASO", ambas compartilharão os nós C->A->S. O nó S terá dois filhos, um para A (marcando o fim da palavra "CASA") e um para O (marcando o fim de "CASO"). É ótima para aplicações de autocomplete.</p>
+                    </div>
+                     <div class="p-4 border-l-4 border-cyan-200 bg-cyan-50 rounded-r-lg">
+                        <h3 class="font-bold text-lg">Árvore Patricia (PATRICIA Tree)</h3>
+                        <p>Uma versão compactada da Trie. Se um nó tem apenas um filho, ele é fundido com esse filho, criando um "salto" na árvore que representa múltiplos caracteres. Isso economiza muito espaço, especialmente quando se armazena palavras com prefixos longos e pouco ramificados.</p>
+                    </div>
                 </div>
             </div>
         </main>
